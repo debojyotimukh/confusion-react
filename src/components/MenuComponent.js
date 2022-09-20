@@ -53,19 +53,17 @@ class Menu extends Component {
   render() {
     const menu = this.state.dishes.map((dish) => {
       return (
-        <div key={dish.id} className="col-12 mt-5">
-          <Media>
-            <Media left middle className="row">
-              <Media
-                object
-                src={dish.image}
-                alt={dish.name}
-                className="col-md-1"
-              />
-              <Media className="col-md-10">
-                <Media heading>{dish.name}</Media>
-                <p>{dish.description}</p>
-              </Media>
+        <div key={dish.id} className="mt-5 col-12">
+          <Media left middle className="row">
+            <Media
+              object
+              src={dish.image}
+              alt={dish.name}
+              className="col-md-2"
+            />
+            <Media body className="ml-5 col-md-10">
+              <Media heading>{dish.name}</Media>
+              <p>{dish.description}</p>
             </Media>
           </Media>
         </div>
