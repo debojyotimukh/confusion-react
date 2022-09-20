@@ -55,9 +55,14 @@ class Menu extends Component {
       return (
         <div key={dish.id} className="col-12 mt-5">
           <Media>
-            <Media left middle>
-              <Media object src={dish.image} alt={dish.name} />
-              <Media body className="ml-5">
+            <Media left middle className="row">
+              <Media
+                object
+                src={dish.image}
+                alt={dish.name}
+                className="col-md-1"
+              />
+              <Media className="col-md-10">
                 <Media heading>{dish.name}</Media>
                 <p>{dish.description}</p>
               </Media>
