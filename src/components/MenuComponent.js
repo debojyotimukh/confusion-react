@@ -17,9 +17,9 @@ const Menu = (props) => {
   );
 };
 
-const RenderMenuItem = ({ dish, onClick }) => {
+const RenderMenuItem = ({ dish }) => {
   return (
-    <Card onClick={() => onClick(dish.id)}>
+    <Card>
       <CardImg width="100%" src={dish.image} alt={dish.name} />
       <CardImgOverlay>
         <CardTitle>
