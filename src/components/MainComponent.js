@@ -33,7 +33,7 @@ class Main extends Component {
       );
     };
 
-    const DishWithId = ({ match }) => {
+    const DishWithId = () => {
       const { dishId } = useParams();
       return (
         <DishDetail
