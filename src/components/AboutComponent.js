@@ -5,40 +5,28 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardImg,
-  CardTitle,
-  CardSubtitle,
-  CardText,
+  Media,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
 const RenderLeader = ({ item }) => {
   if (item != null) {
     return (
-      <Card className="border-0">
-        <div className="row align-items-start">
-          <div className="col-2">
-            <CardImg
-              src={item.image}
-              alt={item.name}
-              style={{ width: "80%", height: "70%" }}
-            />
-          </div>
-          <div className="col-10">
-            <CardBody>
-              <CardTitle>
-                <h3 className="mt-0">{item.name}</h3>
-              </CardTitle>
-              {item.designation ? (
-                <CardSubtitle className="mt-1 mb-2">
-                  {item.designation}
-                </CardSubtitle>
-              ) : null}
-              <CardText>{item.description}</CardText>
-            </CardBody>
-          </div>
-        </div>
-      </Card>
+      <Media>
+        <Media left middle className="row">
+          <Media
+            object
+            src={item.image}
+            alt={item.name}
+            className="col-md-2 h-25"
+          />
+          <Media body className="col-md-10">
+            <Media heading>{item.name}</Media>
+            <p>{item.designation}</p>
+            <p>{item.description}</p>
+          </Media>
+        </Media>
+      </Media>
     );
   }
   return <div></div>;
@@ -47,7 +35,7 @@ const RenderLeader = ({ item }) => {
 const About = (props) => {
   const leaders = props.leaders.map((leader) => {
     return (
-      <div key={leader.id} className="col-12 col-md m-1">
+      <div key={leader.id} className="col-12 col-md m-1 mt-3">
         <RenderLeader item={leader} />
       </div>
     );
@@ -128,7 +116,7 @@ const About = (props) => {
         <div className="col-12">
           <h2>Corporate Leadership</h2>
         </div>
-        <div className="column align-items-start mt-2">{leaders}</div>
+        <Media list>{leaders}</Media>
       </div>
     </div>
   );
