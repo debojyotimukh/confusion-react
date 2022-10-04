@@ -20,9 +20,9 @@ import {
 } from "reactstrap";
 
 class Header extends Component {
-  username = "";
-  password = "";
-  remember = false;
+  usernameRef;
+  passwordRef;
+  rememberRef;
 
   constructor(props) {
     super(props);
@@ -53,11 +53,11 @@ class Header extends Component {
     this.toggleModal();
     alert(
       "User: " +
-        this.username.value +
+        this.usernameRef.value +
         " Password: " +
-        this.password.value +
+        this.passwordRef.value +
         " isRember: " +
-        this.remember.checked
+        this.rememberRef.checked
     );
     event.preventDefault();
   }
@@ -72,7 +72,7 @@ class Header extends Component {
               type="text"
               id="username"
               name="username"
-              innerRef={(input) => (this.username = input)}
+              innerRef={(input) => (this.usernameRef = input)}
             />
           </FormGroup>
           <FormGroup>
@@ -81,7 +81,7 @@ class Header extends Component {
               type="password"
               id="password"
               name="password"
-              innerRef={(input) => (this.password = input)}
+              innerRef={(input) => (this.passwordRef = input)}
             />
           </FormGroup>
           <FormGroup check>
@@ -89,7 +89,7 @@ class Header extends Component {
               <Input
                 type="checkbox"
                 name="remember"
-                innerRef={(input) => (this.remember = input)}
+                innerRef={(input) => (this.rememberRef = input)}
               />
               Remember me
             </Label>
