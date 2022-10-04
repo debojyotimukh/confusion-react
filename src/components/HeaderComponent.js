@@ -9,16 +9,32 @@ import {
   Nav,
   NavItem,
   NavLink,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Form,
+  FormGroup,
+  Input,
+  Label,
 } from "reactstrap";
 
 class Header extends Component {
+  username = "";
+  password = "";
+  remember = false;
+
   constructor(props) {
     super(props);
 
-    this.toggleNav = this.toggleNav.bind(this);
     this.state = {
       isNavOpen: false,
+      isModalOpen: false,
     };
+
+    this.toggleNav = this.toggleNav.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
   }
 
   toggleNav() {
@@ -27,7 +43,64 @@ class Header extends Component {
     });
   }
 
+  toggleModal() {
+    this.setState({
+      isModalOpen: !this.state.isModalOpen,
+    });
+  }
+
+  handleLogin(event) {
+    this.toggleModal();
+    alert(
+      "User: " +
+        this.username.value +
+        " Password: " +
+        this.password.value +
+        " isRember: " +
+        this.remember.checked
+    );
+    event.preventDefault();
+  }
+
   render() {
+    const RenderLoginForm = () => {
+      return (
+        <Form onSubmit={this.handleLogin}>
+          <FormGroup>
+            <Label htmlFor="username">Username</Label>
+            <Input
+              type="text"
+              id="username"
+              name="username"
+              innerRef={(input) => (this.username = input)}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label htmlFor="password">Password</Label>
+            <Input
+              type="password"
+              id="password"
+              name="password"
+              innerRef={(input) => (this.password = input)}
+            />
+          </FormGroup>
+          <FormGroup check>
+            <Label check>
+              <Input
+                type="checkbox"
+                name="remember"
+                innerRef={(input) => (this.remember = input)}
+              />
+              Remember me
+            </Label>
+          </FormGroup>
+          <Button type="submit" value="submit" color="primary">
+            Login
+          </Button>
+        </Form>
+      );
+    };
+
     return (
       <div>
         <Navbar dark expand="md">
@@ -64,6 +137,13 @@ class Header extends Component {
               </NavItem>
             </Nav>
           </Collapse>
+          <Nav className="ml-auto" navbar>
+            <NavItem>
+              <Button outline onClick={this.toggleModal}>
+                <span className="fa fa-sign-in fa-lg"> Login</span>
+              </Button>
+            </NavItem>
+          </Nav>
         </Navbar>
         <div className="jumbotron">
           <Container>
@@ -78,6 +158,12 @@ class Header extends Component {
               </div>
             </div>
           </Container>
+          <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+            <ModalHeader toggle={this.toggleModal}>Login</ModalHeader>
+            <ModalBody>
+              <RenderLoginForm />
+            </ModalBody>
+          </Modal>
         </div>
       </div>
     );

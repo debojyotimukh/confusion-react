@@ -294,7 +294,9 @@ class Contact extends Component {
             <div className="col-12">
               <h3>Send us your Feedback</h3>
             </div>
-            <div className="col-12 col-md-9">{<RenderContactForm />}</div>
+            <div className="col-12 col-md-9">
+              <RenderContactForm />
+            </div>
           </div>
         </div>
       </div>
