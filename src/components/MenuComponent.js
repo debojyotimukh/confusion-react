@@ -8,6 +8,7 @@ import {
   Breadcrumb,
   BreadcrumbItem,
 } from "reactstrap";
+import { baseUrl } from "../shared/baseUrl";
 import { Loading } from "./LoadingComponent";
 
 const Menu = (props) => {
@@ -62,7 +63,7 @@ const RenderMenuItem = ({ dish }) => {
   return (
     <Card>
       <Link to={`/menu/${dish.id}`}>
-        <CardImg width="100%" src={dish.image} alt={dish.name} />
+        <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
         <CardImgOverlay>
           <CardTitle>
             <h2>{dish.name}</h2>
