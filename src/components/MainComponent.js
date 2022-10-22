@@ -97,6 +97,7 @@ class Main extends Component {
     };
 
     const MainTransitionRoutes = () => {
+      // Ref: https://tech.lalilo.com/dynamic-transitions-with-react-router-and-react-transition-group
       const location = useLocation();
       return (
         <TransitionGroup>
