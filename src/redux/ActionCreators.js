@@ -29,7 +29,7 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
         if (response.ok) {
           return response;
         } else {
-          var error = new Error(
+          let error = new Error(
             "Error " + response.status + ": " + response.statusText
           );
           error.response = response;
@@ -199,4 +199,53 @@ export const leadersFailed = (errmess) => ({
 export const addLeaders = (leaders) => ({
   type: ActionTypes.ADD_LEADERS,
   payload: leaders,
+});
+
+export const postFeedback = (data) => (dispatch) => {
+  let newFeedback = {
+    firstname: data.firstname,
+    lastname: data.lastname,
+    telnum: data.telnum,
+    email: data.email,
+    agree: data.agree,
+    contactType: data.contactType,
+    message: data.message,
+    date: new Date().toISOString(),
+  };
+
+  return fetch(baseUrl + "feedback", {
+    method: "POST",
+    body: JSON.stringify(newFeedback),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "same-origin",
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          let error = new Error(
+            "Error " + response.status + ": " + response.statusText
+          );
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        throw error;
+      }
+    )
+    .then((response) => response.json())
+    .then((response) => dispatch(addFeedback(response)))
+    .catch((error) => {
+      console.log("post comments", error.message);
+      alert("Your comment could not be posted\nError: " + error.message);
+    });
+};
+
+export const addFeedback = (feedback) => ({
+  type: ActionTypes.ADD_FEEDBACK,
+  payload: feedback,
 });
