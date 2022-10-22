@@ -13,6 +13,7 @@ import {
   fetchDishes,
   fetchComments,
   fetchPromos,
+  fetchLeaders,
 } from "../redux/ActionCreators";
 import { actions } from "react-redux-form";
 
@@ -32,12 +33,14 @@ const mapDispatchToProps = (dispatch) => ({
   },
   fetchComments: () => dispatch(fetchComments()),
   fetchPromos: () => dispatch(fetchPromos()),
+  fetchLeaders: () => dispatch(fetchLeaders()),
 });
 class Main extends Component {
   componentDidMount() {
     this.props.fetchDishes();
     this.props.fetchComments();
     this.props.fetchPromos();
+    this.props.fetchLeaders();
   }
 
   render() {
@@ -54,7 +57,11 @@ class Main extends Component {
           }
           promoLoading={this.props.promotions.isLoading}
           promoErrMsg={this.props.promotions.errMsg}
-          leader={this.props.leaders.filter((leader) => leader.featured)[0]}
+          leader={
+            this.props.leaders.leaders.filter((leader) => leader.featured)[0]
+          }
+          leaderLoading={this.props.leaders.isLoading}
+          leaderErrMsg={this.props.leaders.errMsg}
         />
       );
     };

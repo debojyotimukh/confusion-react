@@ -8,6 +8,8 @@ import {
   Media,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { Loading } from "./LoadingComponent";
+import { baseUrl } from "../shared/baseUrl";
 
 const RenderLeader = ({ item }) => {
   if (item != null) {
@@ -16,7 +18,7 @@ const RenderLeader = ({ item }) => {
         <Media left middle className="row">
           <Media
             object
-            src={item.image}
+            src={baseUrl + item.image}
             alt={item.name}
             className="col-md-2 h-25"
           />
@@ -33,13 +35,29 @@ const RenderLeader = ({ item }) => {
 };
 
 const About = (props) => {
-  const leaders = props.leaders.map((leader) => {
+  const leaders = props.leaders.leaders.map((leader) => {
     return (
       <div key={leader.id} className="col-12 col-md m-1 mt-3">
         <RenderLeader item={leader} />
       </div>
     );
   });
+
+  const LeaderContainer = () => {
+    if (props.leaders.isLoading) {
+      return (
+        <div className="container">
+          <div className="row">
+            <Loading />
+          </div>
+        </div>
+      );
+    } else if (props.leaders.errMsg) {
+      return <h4>{props.leaders.errMsg}</h4>;
+    } else {
+      return <Media list>{leaders}</Media>;
+    }
+  };
 
   return (
     <div className="container">
@@ -116,7 +134,7 @@ const About = (props) => {
         <div className="col-12">
           <h2>Corporate Leadership</h2>
         </div>
-        <Media list>{leaders}</Media>
+        <LeaderContainer />
       </div>
     </div>
   );
