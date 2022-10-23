@@ -14,7 +14,7 @@ export const FeedbackForm = (state = InitialFeedback, action) => {
     case ActionTypes.POST_FEEDBACK:
       console.log(action.payload);
       return action.payload;
-    case ActionTypes.ADD_FEEDBACK:
+    case ActionTypes.FEEDBACK_SUCCESS:
       alert("Thank you for your feedback!\n" + JSON.stringify(action.payload));
       return action.payload;
     default:

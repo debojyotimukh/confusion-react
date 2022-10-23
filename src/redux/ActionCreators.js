@@ -246,6 +246,6 @@ export const postFeedback = (data) => (dispatch) => {
 };
 
 export const addFeedback = (feedback) => ({
-  type: ActionTypes.ADD_FEEDBACK,
+  type: ActionTypes.FEEDBACK_SUCCESS,
   payload: feedback,
 });
