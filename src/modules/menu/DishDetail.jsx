@@ -14,6 +14,7 @@ import { Link, useParams } from "react-router-dom";
 import { baseUrl } from "../../constants";
 import { useState, useEffect } from "react";
 import { getDishWithComments } from "../../services";
+import AddCommentForm from "./AddCommentForm";
 
 const DishDetail = () => {
   const { dishId } = useParams();
@@ -66,7 +67,7 @@ const DishDetail = () => {
           <DishCard dish={dish} />
         </div>
         <div className="col-xm-12 col-md-5 m-1">
-          <Comments comments={dish.comments} />
+          <Comments dishId={dish.id} dishComments={dish.comments} />
         </div>
       </div>
     </Container>
@@ -89,14 +90,19 @@ const DishCard = ({ dish }) => {
   );
 };
 
-const Comments = ({ comments }) => {
+const Comments = ({ dishId, dishComments }) => {
+  const [comments, setComments] = useState(dishComments);
+  const setNewComment = (comment) => {
+    setComments((prevComments) => [...prevComments, comment]);
+  };
+
   return (
     <div className="container">
       <h4>Comments</h4>
       <ul className="list-unstyled">
-        {comments.map((comment) => {
+        {comments.map((comment, index) => {
           return (
-            <li key={comment.id} className="row mb-2">
+            <li key={index} className="row mb-2">
               {comment.comment}
               <div className="mt-1">
                 -- {comment.author}, {parseCommentDate(comment.date)}
@@ -105,7 +111,7 @@ const Comments = ({ comments }) => {
           );
         })}
       </ul>
-      comment form
+      <AddCommentForm dishId={dishId} updateComments={setNewComment} />
     </div>
   );
 };

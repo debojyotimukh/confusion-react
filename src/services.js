@@ -1,4 +1,3 @@
-import { date } from "yup";
 import { baseUrl } from "./constants";
 
 const getPromise = (endpoint) => {
@@ -75,7 +74,13 @@ const postPromise = (endpoint, payload) => {
 };
 
 export const postFeedback = (feedback, sucessCallback, failedCallback) => {
-  postPromise("feedback", { ...feedback, date: new Date().toISOString() })
+  postPromise("feedback", { ...feedback, id: crypto.randomUUID() })
+    .then((response) => sucessCallback(response))
+    .catch((error) => failedCallback(error.message));
+};
+
+export const postComment = (comment, sucessCallback, failedCallback) => {
+  postPromise("comments", { ...comment, id: crypto.randomUUID() })
     .then((response) => sucessCallback(response))
     .catch((error) => failedCallback(error.message));
 };

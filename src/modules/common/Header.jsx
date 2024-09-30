@@ -9,11 +9,8 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
 } from "reactstrap";
+import { LoginButton, LoginModal } from "../login/Login";
 
 const Header = () => {
   const [isNavOpen, setNavOpen] = useState(false);
@@ -82,28 +79,5 @@ const PageNavigation = ({ collapse }) => {
         ))}
       </Nav>
     </Collapse>
-  );
-};
-
-const LoginButton = ({ onClick }) => {
-  return (
-    <Nav className="ml-auto" navbar>
-      <NavItem>
-        <Button outline onClick={onClick}>
-          <span className="fa fa-sign-in fa-lg"> Login</span>
-        </Button>
-      </NavItem>
-    </Nav>
-  );
-};
-
-const LoginModal = ({ isOpen, toggler }) => {
-  return (
-    <Modal isOpen={isOpen} toggle={toggler}>
-      <ModalHeader toggle={toggler}>Login</ModalHeader>
-      <ModalBody>
-        <div>login form</div>
-      </ModalBody>
-    </Modal>
   );
 };

@@ -2,10 +2,24 @@ import { useFormik } from "formik";
 import { Button, Form, FormGroup, Label, Input, Col } from "reactstrap";
 import * as Yup from "yup";
 import { postFeedback } from "../../services";
-import { useState } from "react";
+import { useReducer } from "react";
+
+const submitResponseReducer = (_, action) => {
+  if (action.type === "success")
+    return { message: "Thanks for feedback!", displayStyle: "text-success" };
+  if (action.type === "error")
+    return {
+      message: "Failed to submit, try again",
+      displayStyle: "text-danger",
+    };
+  throw Error("Unknown action.");
+};
 
 const FeedbackForm = () => {
-  const [submitResponse, setSubmitResponse] = useState(null);
+  const [submitResponse, dispatchSubmitResponse] = useReducer(
+    submitResponseReducer,
+    { message: null, displayStyle: "" }
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -14,7 +28,7 @@ const FeedbackForm = () => {
       telnum: "",
       email: "",
       agree: true,
-      contactType: "",
+      contactType: "tel",
       message: "",
     },
     validationSchema: Yup.object({
@@ -26,31 +40,35 @@ const FeedbackForm = () => {
         .min(3, "Must be greater than 2 characters")
         .max(15, "Must be 15 characters or less")
         .required("Required"),
-      telnum: Yup.number()
+      telnum: Yup.number("Must be a number")
         .min(100, "Must be greater than 2 numbers")
         .max(99999999999, "Must be 15 numbers or less")
         .required("Required"),
       email: Yup.string().email("Invalid Email Address").required("Required"),
     }),
     onSubmit: (values, { resetForm, setSubmitting }) => {
+      const feedback = {
+        ...values,
+        date: new Date().toISOString(),
+      };
       postFeedback(
-        values,
+        feedback,
         () => {
-          console.log("Feedback submitted");
-          setSubmitResponse(null);
+          console.log("Feedback submitted: " + JSON.stringify(feedback));
+          dispatchSubmitResponse({ type: "success" });
           resetForm();
         },
         (msg) => {
           console.log("Feedback submit failed: " + msg);
-          setSubmitResponse("Failed to submit, try again");
-          setSubmitting(false);
+          dispatchSubmitResponse({ type: "error" });
+          setSubmitting(false); // don't reset form, allow retry
         }
       );
     },
   });
 
   return (
-    <Form model="feedback" onSubmit={formik.handleSubmit}>
+    <Form onSubmit={formik.handleSubmit}>
       <TextInput formik={formik} formModel={"firstname"} label={"First Name"} />
       <TextInput formik={formik} formModel={"lastname"} label={"Last Name"} />
       <TextInput formik={formik} formModel={"telnum"} label={"Contact Tel."} />
@@ -65,6 +83,7 @@ const FeedbackForm = () => {
                 type="checkbox"
                 name="agree"
                 className="form-check-input"
+                defaultChecked={true}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.agree}
@@ -81,8 +100,8 @@ const FeedbackForm = () => {
             onBlur={formik.handleBlur}
             value={formik.values.contactType}
           >
-            <option>Tel.</option>
-            <option>Email</option>
+            <option value={"tel"}>Tel.</option>
+            <option value={"email"}>Email</option>
           </Input>
         </Col>
       </FormGroup>
@@ -100,7 +119,7 @@ const FeedbackForm = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.message}
-          ></Input>
+          />
         </Col>
       </FormGroup>
       <FormGroup row>
@@ -108,8 +127,10 @@ const FeedbackForm = () => {
           <Button type="submit" color="primary" disabled={formik.isSubmitting}>
             Send Feedback
           </Button>
-          {submitResponse ? (
-            <div className="text-danger">{submitResponse}</div>
+          {submitResponse.message ? (
+            <div className={submitResponse.displayStyle}>
+              {submitResponse.message}
+            </div>
           ) : null}
         </Col>
       </FormGroup>
