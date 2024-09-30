@@ -8,7 +8,7 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import Leaders from "./Leaders";
-import { fetchAll } from "../../services";
+import { get } from "../../services";
 
 const About = () => {
   const [leaders, setLeaders] = useState({});
@@ -25,7 +25,7 @@ const About = () => {
     setLeaderLoading(false);
   };
   useEffect(() => {
-    fetchAll("leaders", leaderLoaded, leaderFailed);
+    get("leaders", leaderLoaded, leaderFailed);
   }, []);
 
   return (

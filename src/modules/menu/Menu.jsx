@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Loading from "../common/Loading";
 import { baseUrl } from "../../constants";
-import { fetchAll } from "../../services";
+import { get } from "../../services";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -28,7 +28,7 @@ const Menu = () => {
   };
 
   useEffect(() => {
-    fetchAll("dishes", dishLoaded, dishFailed);
+    get("dishes", dishLoaded, dishFailed);
   }, []);
 
   return isLoading ? (

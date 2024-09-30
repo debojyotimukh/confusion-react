@@ -9,7 +9,7 @@ import {
 
 import Loading from "../common/Loading";
 import { useEffect, useState } from "react";
-import { fetchAll } from "../../services";
+import { get } from "../../services";
 import { baseUrl } from "../../constants";
 
 const Home = () => {
@@ -18,7 +18,6 @@ const Home = () => {
   const [dishesErrMsg, setDishesErrMsg] = useState(null);
 
   const dishLoaded = (data) => {
-    console.log(JSON.stringify(data));
     setDish(data && data.filter((dish) => dish.featured)[0]);
     setDishesLoading(false);
   };
@@ -55,9 +54,9 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchAll("dishes", dishLoaded, dishFailed);
-    fetchAll("promotions", promoLoaded, promoFailed);
-    fetchAll("leaders", leaderLoaded, leaderFailed);
+    get("dishes", dishLoaded, dishFailed);
+    get("promotions", promoLoaded, promoFailed);
+    get("leaders", leaderLoaded, leaderFailed);
   }, []);
 
   return (

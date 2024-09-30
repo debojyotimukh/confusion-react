@@ -5,8 +5,10 @@ import Header from "./modules/common/Header";
 import Home from "./modules/home/Home";
 import About from "./modules/about/About";
 import Menu from "./modules/menu/Menu";
+import DishDetail from "./modules/menu/DishDetail";
+import Contact from "./modules/contact/Contact";
 
-export const App = () => {
+const App = () => {
   return (
     <BrowserRouter>
       <Header />
@@ -15,10 +17,12 @@ export const App = () => {
         <Route exact path="/home" element={<Home />} />
         <Route exact path="/aboutus" element={<About />} />
         <Route exact path="/menu" element={<Menu />} />
-        <Route exact path="/menu/:dishId" element={() => <div></div>} />
-        <Route exact path="/contactus" element={() => <div></div>} />
+        <Route exact path="/menu/:dishId" element={<DishDetail />} />
+        <Route exact path="/contactus" element={<Contact />} />
       </Routes>
       <Footer />
     </BrowserRouter>
   );
 };
+
+export default App;
