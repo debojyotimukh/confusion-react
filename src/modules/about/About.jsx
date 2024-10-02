@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,9 +7,8 @@ import {
   CardBody,
   CardHeader,
 } from "reactstrap";
-import { Link } from "react-router-dom";
-import Leaders from "./Leaders";
 import { get } from "../../services";
+import Leaders from "./Leaders";
 
 const About = () => {
   const [leaders, setLeaders] = useState({});

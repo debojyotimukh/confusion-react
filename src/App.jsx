@@ -1,14 +1,14 @@
 import React from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./App.css";
+import About from "./modules/about/About";
 import Footer from "./modules/common/Footer";
 import Header from "./modules/common/Header";
-import Home from "./modules/home/Home";
-import About from "./modules/about/About";
-import Menu from "./modules/menu/Menu";
-import DishDetail from "./modules/menu/DishDetail";
 import Contact from "./modules/contact/Contact";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
+import Home from "./modules/home/Home";
+import DishDetail from "./modules/menu/DishDetail";
+import Menu from "./modules/menu/Menu";
 
 const App = () => {
   const location = useLocation();

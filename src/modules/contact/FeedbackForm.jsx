@@ -1,8 +1,8 @@
 import { useFormik } from "formik";
-import { Button, Form, FormGroup, Label, Input, Col } from "reactstrap";
+import { useReducer } from "react";
+import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
 import * as Yup from "yup";
 import { postFeedback } from "../../services";
-import { useReducer } from "react";
 
 const submitResponseReducer = (_, action) => {
   if (action.type === "success")

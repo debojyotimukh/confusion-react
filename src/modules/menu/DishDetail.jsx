@@ -1,19 +1,19 @@
-import Loading from "../common/Loading";
-import { parseCommentDate } from "../../utils";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import {
-  Card,
-  CardImg,
-  CardText,
-  CardBody,
-  CardTitle,
-  Container,
   Breadcrumb,
   BreadcrumbItem,
+  Card,
+  CardBody,
+  CardImg,
+  CardText,
+  CardTitle,
+  Container,
 } from "reactstrap";
-import { Link, useParams } from "react-router-dom";
 import { baseUrl } from "../../constants";
-import { useState, useEffect } from "react";
 import { getDishWithComments } from "../../services";
+import { parseCommentDate } from "../../utils";
+import Loading from "../common/Loading";
 import AddCommentForm from "./AddCommentForm";
 
 const DishDetail = () => {

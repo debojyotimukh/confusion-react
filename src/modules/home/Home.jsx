@@ -1,16 +1,16 @@
 import {
   Card,
-  CardImg,
-  CardText,
   CardBody,
-  CardTitle,
+  CardImg,
   CardSubtitle,
+  CardText,
+  CardTitle,
 } from "reactstrap";
 
-import Loading from "../common/Loading";
 import { useEffect, useState } from "react";
-import { get } from "../../services";
 import { baseUrl } from "../../constants";
+import { get } from "../../services";
+import Loading from "../common/Loading";
 
 const Home = () => {
   const [dish, setDish] = useState({});

@@ -1,6 +1,6 @@
-import Loading from "../common/Loading";
-import { baseUrl } from "../../constants";
 import { Media } from "reactstrap";
+import { baseUrl } from "../../constants";
+import Loading from "../common/Loading";
 
 const Leaders = ({ leaders, isLoading, errMsg }) => {
   return isLoading ? (
