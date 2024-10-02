@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer } from "react";
 import { Link } from "react-router-dom";
 import {
   Breadcrumb,
@@ -8,24 +8,23 @@ import {
   CardHeader,
 } from "reactstrap";
 import { get } from "../../services";
+import {
+  fetchActionTypes,
+  fetchReducer,
+  pendingState,
+} from "../common/fetchReducer";
 import Leaders from "./Leaders";
 
 const About = () => {
-  const [leaders, setLeaders] = useState({});
-  const [leaderLoading, setLeaderLoading] = useState(true);
-  const [leaderErrMsg, setLeaderErrMsg] = useState(null);
-
-  const leaderLoaded = (data) => {
-    setLeaders(data);
-    setLeaderLoading(false);
-  };
-
-  const leaderFailed = (errMsg) => {
-    setLeaderErrMsg(errMsg);
-    setLeaderLoading(false);
-  };
+  const [leaders, leadersDispatch] = useReducer(fetchReducer, pendingState);
   useEffect(() => {
-    get("leaders", leaderLoaded, leaderFailed);
+    get(
+      "leaders",
+      (data) =>
+        leadersDispatch({ type: fetchActionTypes.FULFILLED, payload: data }),
+      (errmsg) =>
+        leadersDispatch({ type: fetchActionTypes.REJECTED, payload: errmsg })
+    );
   }, []);
 
   return (
@@ -52,9 +51,9 @@ const About = () => {
           <h2>Corporate Leadership</h2>
         </div>
         <Leaders
-          leaders={leaders}
-          isLoading={leaderLoading}
-          errMsg={leaderErrMsg}
+          leaders={leaders.data}
+          isLoading={leaders.isLoading}
+          errMsg={leaders.error}
         />
       </div>
     </div>

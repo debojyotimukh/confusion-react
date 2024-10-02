@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import { Link } from "react-router-dom";
 import {
   Breadcrumb,
@@ -11,37 +11,36 @@ import {
 import { baseUrl } from "../../constants";
 import { get } from "../../services";
 import Loading from "../common/Loading";
+import {
+  fetchActionTypes,
+  fetchReducer,
+  pendingState,
+} from "../common/fetchReducer";
 
 const Menu = () => {
-  const [dishes, setDishes] = useState({});
-  const [isLoading, setLoading] = useState(true);
-  const [errMsg, setErrMsg] = useState(null);
-
-  const dishLoaded = (data) => {
-    setDishes(data);
-    setLoading(false);
-  };
-
-  const dishFailed = (errMsg) => {
-    setErrMsg(errMsg);
-    setLoading(false);
-  };
+  const [dishes, dishesDispatch] = useReducer(fetchReducer, pendingState);
 
   useEffect(() => {
-    get("dishes", dishLoaded, dishFailed);
+    get(
+      "dishes",
+      (data) =>
+        dishesDispatch({ type: fetchActionTypes.FULFILLED, payload: data }),
+      (errmsg) =>
+        dishesDispatch({ type: fetchActionTypes.REJECTED, payload: errmsg })
+    );
   }, []);
 
-  return isLoading ? (
+  return dishes.isLoading ? (
     <div className="container">
       <div className="row">
         <Loading />
       </div>
     </div>
-  ) : errMsg ? (
+  ) : dishes.error ? (
     <div className="container">
       <div className="row">
         <div className="col-12">
-          <h4>{errMsg}</h4>
+          <h4>{dishes.error}</h4>
         </div>
       </div>
     </div>
@@ -60,7 +59,7 @@ const Menu = () => {
         </div>
       </div>
       <div className="row">
-        {dishes.map((dish) => (
+        {dishes.data.map((dish) => (
           <div key={dish.id} className="col-12 col-md-5 m-1">
             <RenderMenuItem dish={dish} />
           </div>
