@@ -14,5 +14,7 @@ export const fetchReducer = (_, action) => {
       return { data: action.payload, isLoading: false, error: null };
     case fetchActionTypes.REJECTED:
       return { data: {}, isLoading: false, error: action.payload };
+    default:
+      throw new Error("Unsupported action: " + action.type);
   }
 };
