@@ -9,35 +9,21 @@ import {
 
 import { useEffect, useReducer } from "react";
 import { baseUrl } from "../../constants";
-import { get } from "../../services";
+import { getAndDispatch } from "../../services";
 import Loading from "../common/Loading";
-import {
-  fetchActionTypes,
-  fetchReducer,
-  pendingState,
-} from "../common/fetchReducer";
+import { fetchReducer, pendingState } from "../common/fetchReducer";
 
 const Home = () => {
   const [dish, dishesDispatch] = useReducer(fetchReducer, pendingState);
   const [promo, promoDispatch] = useReducer(fetchReducer, pendingState);
   const [leader, leaderDispatch] = useReducer(fetchReducer, pendingState);
-
-  const getFeatured = (endpoint, dispatch) => {
-    get(
-      endpoint,
-      (data) =>
-        dispatch({
-          type: fetchActionTypes.FULFILLED,
-          payload: data && data.filter((item) => item.featured)[0],
-        }),
-      (errmsg) => dispatch({ type: fetchActionTypes.REJECTED, payload: errmsg })
-    );
-  };
+  const filterFeatured = (data) =>
+    data && data.filter((item) => item.featured)[0];
 
   useEffect(() => {
-    getFeatured("dishes", dishesDispatch);
-    getFeatured("promotions", promoDispatch);
-    getFeatured("leaders", leaderDispatch);
+    getAndDispatch("dishes", dishesDispatch, filterFeatured);
+    getAndDispatch("promotions", promoDispatch, filterFeatured);
+    getAndDispatch("leaders", leaderDispatch, filterFeatured);
   }, []);
 
   return (

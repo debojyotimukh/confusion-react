@@ -9,25 +9,15 @@ import {
   CardTitle,
 } from "reactstrap";
 import { baseUrl } from "../../constants";
-import { get } from "../../services";
+import { getAndDispatch } from "../../services";
 import Loading from "../common/Loading";
-import {
-  fetchActionTypes,
-  fetchReducer,
-  pendingState,
-} from "../common/fetchReducer";
+import { fetchReducer, pendingState } from "../common/fetchReducer";
 
 const Menu = () => {
   const [dishes, dishesDispatch] = useReducer(fetchReducer, pendingState);
 
   useEffect(() => {
-    get(
-      "dishes",
-      (data) =>
-        dishesDispatch({ type: fetchActionTypes.FULFILLED, payload: data }),
-      (errmsg) =>
-        dishesDispatch({ type: fetchActionTypes.REJECTED, payload: errmsg })
-    );
+    getAndDispatch("dishes", dishesDispatch);
   }, []);
 
   return dishes.isLoading ? (

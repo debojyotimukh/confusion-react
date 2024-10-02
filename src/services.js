@@ -1,4 +1,5 @@
 import { baseUrl } from "./constants";
+import { fetchActionTypes } from "./modules/common/fetchReducer";
 
 const getPromise = (endpoint) => {
   return fetch(baseUrl + endpoint)
@@ -43,6 +44,18 @@ export const getDishWithComments = async (
   } catch (error) {
     failedCallback(error.message);
   }
+};
+
+export const getAndDispatch = (endpoint, dispatch, processor = (x) => x) => {
+  get(
+    endpoint,
+    (data) =>
+      dispatch({
+        type: fetchActionTypes.FULFILLED,
+        payload: processor(data),
+      }),
+    (errmsg) => dispatch({ type: fetchActionTypes.REJECTED, payload: errmsg })
+  );
 };
 
 const postPromise = (endpoint, payload) => {

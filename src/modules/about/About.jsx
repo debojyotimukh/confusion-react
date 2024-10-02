@@ -7,24 +7,15 @@ import {
   CardBody,
   CardHeader,
 } from "reactstrap";
-import { get } from "../../services";
-import {
-  fetchActionTypes,
-  fetchReducer,
-  pendingState,
-} from "../common/fetchReducer";
+import { getAndDispatch } from "../../services";
+import { fetchReducer, pendingState } from "../common/fetchReducer";
 import Leaders from "./Leaders";
 
 const About = () => {
   const [leaders, leadersDispatch] = useReducer(fetchReducer, pendingState);
+
   useEffect(() => {
-    get(
-      "leaders",
-      (data) =>
-        leadersDispatch({ type: fetchActionTypes.FULFILLED, payload: data }),
-      (errmsg) =>
-        leadersDispatch({ type: fetchActionTypes.REJECTED, payload: errmsg })
-    );
+    getAndDispatch("leaders", leadersDispatch);
   }, []);
 
   return (
