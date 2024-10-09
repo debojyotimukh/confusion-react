@@ -71,7 +71,7 @@ const PageNavigation = ({ collapse }) => {
     <Collapse navbar isOpen={collapse}>
       <Nav navbar>
         {navigation.map((page) => (
-          <NavItem>
+          <NavItem key={page.to}>
             <NavLink tag={Link} to={page.to}>
               <span className={`fa ${page.icon} fa-lg`}></span> {page.name}
             </NavLink>
