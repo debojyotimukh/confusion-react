@@ -63,9 +63,9 @@ const HomeCard = ({ item, isLoading, errMsg }) => {
           <CardImg src={baseUrl + item.image} alt={item.name} />
           <CardBody>
             <CardTitle>{item.name}</CardTitle>
-            {item.designation ? (
+            {item.designation && (
               <CardSubtitle>{item.designation}</CardSubtitle>
-            ) : null}
+            )}
             <CardText>{item.description}</CardText>
           </CardBody>
         </Card>
