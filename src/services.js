@@ -1,5 +1,5 @@
+import { fetchActionTypes } from "./app/common/fetchReducer";
 import { baseUrl } from "./constants";
-import { fetchActionTypes } from "./modules/common/fetchReducer";
 
 const getPromise = (endpoint) => {
   return fetch(baseUrl + endpoint)

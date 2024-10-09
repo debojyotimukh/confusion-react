@@ -2,13 +2,13 @@ import React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./App.css";
-import About from "./modules/about/About";
-import Footer from "./modules/common/Footer";
-import Header from "./modules/common/Header";
-import Contact from "./modules/contact/Contact";
-import Home from "./modules/home/Home";
-import DishDetail from "./modules/menu/DishDetail";
-import Menu from "./modules/menu/Menu";
+import About from "./app/about/About";
+import Footer from "./app/common/Footer";
+import Header from "./app/common/Header";
+import Contact from "./app/contact/Contact";
+import Home from "./app/home/Home";
+import DishDetail from "./app/menu/DishDetail";
+import Menu from "./app/menu/Menu";
 
 const App = () => {
   const location = useLocation();
