@@ -1,7 +1,7 @@
 import { fetchActionTypes } from "./app/common/fetchReducer";
 import { baseUrl } from "./constants";
 
-const getPromise = (endpoint) => {
+export const getPromise = (endpoint) => {
   return fetch(baseUrl + endpoint)
     .then(
       (response) => {
