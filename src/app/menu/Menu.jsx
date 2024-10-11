@@ -1,4 +1,5 @@
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   Breadcrumb,
@@ -9,10 +10,16 @@ import {
   CardTitle,
 } from "reactstrap";
 import { baseUrl } from "../../constants";
+import { fetchDishes } from "../../features/dish/dishSlice";
 import Loading from "../common/Loading";
 
 const Menu = () => {
   const dishes = useSelector((state) => state.dishes);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (dishes.data.length === 0) dispatch(fetchDishes());
+  }, [dishes.data.length, dispatch]);
 
   return dishes.isLoading ? (
     <div className="container">

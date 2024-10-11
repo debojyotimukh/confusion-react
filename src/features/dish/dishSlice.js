@@ -15,6 +15,8 @@ const dishSlice = createSlice({
   selectors: {
     selectFeaturedDish: (state) =>
       state.data.filter((dish) => dish.featured)[0],
+    selectDishById: (state, dishId) =>
+      state.data.filter((dish) => dish.id === dishId)[0],
   },
   extraReducers: (builder) => {
     builder
@@ -33,6 +35,6 @@ const dishSlice = createSlice({
   },
 });
 
-export const { selectFeaturedDish } = dishSlice.selectors;
+export const { selectFeaturedDish, selectDishById } = dishSlice.selectors;
 
 export default dishSlice.reducer;

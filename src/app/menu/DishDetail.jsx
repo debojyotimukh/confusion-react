@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import {
   Breadcrumb,
@@ -11,30 +12,27 @@ import {
   Container,
 } from "reactstrap";
 import { baseUrl } from "../../constants";
-import { getDishWithComments } from "../../services";
+import {
+  fetchComments,
+  selectCommentsByDishId,
+} from "../../features/dish/commentSlice";
+import { fetchDishes, selectDishById } from "../../features/dish/dishSlice";
 import { parseCommentDate } from "../../utils";
 import Loading from "../common/Loading";
 import AddCommentForm from "./AddCommentForm";
 
 const DishDetail = () => {
   const { dishId } = useParams();
-  const [dish, setDish] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-  const [errMsg, setErrMsg] = useState(null);
 
-  const dishLoaded = (data) => {
-    setDish(data);
-    setIsLoading(false);
-  };
+  const dish = useSelector((state) => selectDishById(state, dishId));
+  const isLoading = useSelector((state) => state.dishes.isLoading);
+  const errMsg = useSelector((state) => state.dishes.error);
 
-  const dishFailed = (errMsg) => {
-    setErrMsg(errMsg);
-    setIsLoading(false);
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getDishWithComments(parseInt(dishId, 10), dishLoaded, dishFailed);
-  }, [dishId]);
+    if (!dish) dispatch(fetchDishes());
+  }, [dish, dispatch]);
 
   return isLoading ? (
     <Container>
@@ -67,7 +65,8 @@ const DishDetail = () => {
           <DishCard dish={dish} />
         </div>
         <div className="col-xm-12 col-md-5 m-1">
-          <Comments dishId={dish.id} dishComments={dish.comments} />
+          <div></div>
+          <Comments dishId={dish.id} />
         </div>
       </div>
     </Container>
@@ -90,11 +89,15 @@ const DishCard = ({ dish }) => {
   );
 };
 
-const Comments = ({ dishId, dishComments }) => {
-  const [comments, setComments] = useState(dishComments);
-  const setNewComment = (comment) => {
-    setComments((prevComments) => [...prevComments, comment]);
-  };
+const Comments = ({ dishId }) => {
+  const comments = useSelector((state) =>
+    selectCommentsByDishId(state, dishId)
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (comments.length === 0) dispatch(fetchComments());
+  }, [comments.length, dispatch]);
 
   return (
     <div className="container">
@@ -111,7 +114,7 @@ const Comments = ({ dishId, dishComments }) => {
           );
         })}
       </ul>
-      <AddCommentForm dishId={dishId} updateComments={setNewComment} />
+      <AddCommentForm dishId={dishId} />
     </div>
   );
 };
