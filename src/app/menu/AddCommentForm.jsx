@@ -1,5 +1,6 @@
 import { useFormik } from "formik";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   Button,
   Col,
@@ -12,9 +13,10 @@ import {
   ModalHeader,
 } from "reactstrap";
 import * as Yup from "yup";
-import { postComment } from "../../services";
+import { addNewComment } from "../../features/dish/commentSlice";
 
-const AddCommentForm = ({ updateComments, dishId }) => {
+const AddCommentForm = ({ dishId }) => {
+  const dispatch = useDispatch();
   const [isModalOpen, setModalOpen] = useState(false);
   const toggleModal = () => setModalOpen(!isModalOpen);
   const [submitError, setSubmitError] = useState(null);
@@ -34,26 +36,23 @@ const AddCommentForm = ({ updateComments, dishId }) => {
         .min(10, "At least 10 characters")
         .required("Required"),
     }),
-    onSubmit: (values, { resetForm, setSubmitting }) => {
-      const comment = {
-        ...values,
-        dishId: dishId,
-        date: new Date().toISOString(),
-      };
-      postComment(
-        comment,
-        () => {
-          console.log("Comment added: " + JSON.stringify(comment));
-          updateComments(comment);
-          resetForm();
-          toggleModal();
-        },
-        (msg) => {
-          console.log("Feedback submit failed: " + msg);
-          setSubmitError("Failed to submit, try again");
-          setSubmitting(false);
-        }
-      );
+    onSubmit: async (values, { resetForm, setSubmitting }) => {
+      try {
+        const comment = {
+          ...values,
+          id: crypto.randomUUID(),
+          dishId: parseInt(dishId),
+          date: new Date().toISOString(),
+        };
+        console.log("Comment added: " + JSON.stringify(comment));
+        await dispatch(addNewComment(comment)).unwrap();
+        resetForm();
+        toggleModal();
+      } catch (error) {
+        console.log("Feedback submit failed: " + error.message);
+        setSubmitError("Failed to submit, try again");
+        setSubmitting(false);
+      }
     },
   });
 

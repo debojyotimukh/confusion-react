@@ -1,4 +1,5 @@
-import { useEffect, useReducer } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   Breadcrumb,
@@ -9,16 +10,16 @@ import {
   CardTitle,
 } from "reactstrap";
 import { baseUrl } from "../../constants";
-import { getAndDispatch } from "../../services";
+import { fetchDishes } from "../../features/dish/dishSlice";
 import Loading from "../common/Loading";
-import { fetchReducer, pendingState } from "../common/fetchReducer";
 
 const Menu = () => {
-  const [dishes, dishesDispatch] = useReducer(fetchReducer, pendingState);
+  const dishes = useSelector((state) => state.dishes);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getAndDispatch("dishes", dishesDispatch);
-  }, []);
+    if (dishes.data.length === 0) dispatch(fetchDishes());
+  }, [dishes.data.length, dispatch]);
 
   return dishes.isLoading ? (
     <div className="container">
@@ -51,7 +52,7 @@ const Menu = () => {
       <div className="row">
         {dishes.data.map((dish) => (
           <div key={dish.id} className="col-12 col-md-5 m-1">
-            <RenderMenuItem dish={dish} />
+            <DishCard dish={dish} />
           </div>
         ))}
       </div>
@@ -61,7 +62,7 @@ const Menu = () => {
 
 export default Menu;
 
-const RenderMenuItem = ({ dish }) => {
+const DishCard = ({ dish }) => {
   return (
     <Card>
       <Link to={`/menu/${dish.id}`}>

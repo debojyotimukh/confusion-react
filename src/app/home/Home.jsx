@@ -7,40 +7,48 @@ import {
   CardTitle,
 } from "reactstrap";
 
-import { useEffect, useReducer } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { baseUrl } from "../../constants";
-import { getAndDispatch } from "../../services";
+import { fetchDishes, selectFeaturedDish } from "../../features/dish/dishSlice";
+import {
+  fetchLeaders,
+  selectFeaturedLeader,
+} from "../../features/leader/leaderSlice";
+import {
+  fetchPromos,
+  selectFeaturedPromo,
+} from "../../features/promo/promoSlice";
 import Loading from "../common/Loading";
-import { fetchReducer, pendingState } from "../common/fetchReducer";
 
 const Home = () => {
-  const [dish, dishesDispatch] = useReducer(fetchReducer, pendingState);
-  const [promo, promoDispatch] = useReducer(fetchReducer, pendingState);
-  const [leader, leaderDispatch] = useReducer(fetchReducer, pendingState);
-  const filterFeatured = (data) =>
-    data && data.filter((item) => item.featured)[0];
+  const dish = useSelector((state) => state.dishes);
+  const promo = useSelector((state) => state.promotions);
+  const leader = useSelector((state) => state.leaders);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getAndDispatch("dishes", dishesDispatch, filterFeatured);
-    getAndDispatch("promotions", promoDispatch, filterFeatured);
-    getAndDispatch("leaders", leaderDispatch, filterFeatured);
-  }, []);
+    if (dish.data.length === 0) dispatch(fetchDishes());
+    if (promo.data.length === 0) dispatch(fetchPromos());
+    if (leader.data.length === 0) dispatch(fetchLeaders());
+  }, [dish, promo, leader, dispatch]);
 
   return (
     <div className="container">
       <div className="row align-items-start">
         <HomeCard
-          item={dish.data}
+          item={useSelector(selectFeaturedDish)}
           isLoading={dish.isLoading}
           errMsg={dish.error}
         />
         <HomeCard
-          item={promo.data}
+          item={useSelector(selectFeaturedPromo)}
           isLoading={promo.isLoading}
           errMsg={promo.error}
         />
         <HomeCard
-          item={leader.data}
+          item={useSelector(selectFeaturedLeader)}
           isLoading={leader.isLoading}
           errMsg={leader.error}
         />
@@ -63,9 +71,9 @@ const HomeCard = ({ item, isLoading, errMsg }) => {
           <CardImg src={baseUrl + item.image} alt={item.name} />
           <CardBody>
             <CardTitle>{item.name}</CardTitle>
-            {item.designation ? (
+            {item.designation && (
               <CardSubtitle>{item.designation}</CardSubtitle>
-            ) : null}
+            )}
             <CardText>{item.description}</CardText>
           </CardBody>
         </Card>

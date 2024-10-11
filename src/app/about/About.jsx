@@ -1,4 +1,5 @@
-import React, { useEffect, useReducer } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   Breadcrumb,
@@ -7,16 +8,10 @@ import {
   CardBody,
   CardHeader,
 } from "reactstrap";
-import { getAndDispatch } from "../../services";
-import { fetchReducer, pendingState } from "../common/fetchReducer";
 import Leaders from "./Leaders";
 
 const About = () => {
-  const [leaders, leadersDispatch] = useReducer(fetchReducer, pendingState);
-
-  useEffect(() => {
-    getAndDispatch("leaders", leadersDispatch);
-  }, []);
+  const leaders = useSelector((state) => state.leaders);
 
   return (
     <div className="container">
