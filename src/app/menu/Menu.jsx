@@ -1,17 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  Card,
-  CardImg,
-  CardImgOverlay,
-  CardTitle,
-} from "reactstrap";
+import { Card, CardImg, CardImgOverlay, CardTitle } from "reactstrap";
 import { baseUrl } from "../../constants";
 import { fetchDishes } from "../../features/dish/dishSlice";
 import Loading from "../common/Loading";
+import NavBreadcrumb from "../common/NavBreadcrumb";
 
 const Menu = () => {
   const dishes = useSelector((state) => state.dishes);
@@ -38,12 +32,7 @@ const Menu = () => {
   ) : (
     <div className="container">
       <div className="row">
-        <Breadcrumb>
-          <BreadcrumbItem>
-            <Link to="/home">Home</Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem active>Menu</BreadcrumbItem>
-        </Breadcrumb>
+        <NavBreadcrumb />
         <div className="col-12">
           <h3>Menu</h3>
           <hr />

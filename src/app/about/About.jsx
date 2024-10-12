@@ -1,13 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  Card,
-  CardBody,
-  CardHeader,
-} from "reactstrap";
+import { Card, CardBody, CardHeader } from "reactstrap";
+import NavBreadcrumb from "../common/NavBreadcrumb";
 import Leaders from "./Leaders";
 
 const About = () => {
@@ -16,12 +10,7 @@ const About = () => {
   return (
     <div className="container">
       <div className="row">
-        <Breadcrumb>
-          <BreadcrumbItem>
-            <Link to="/home">Home</Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem active>About Us</BreadcrumbItem>
-        </Breadcrumb>
+        <NavBreadcrumb activeName="About Us" />
         <div className="col-12">
           <h3>About Us</h3>
           <hr />

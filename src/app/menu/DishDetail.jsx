@@ -1,9 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
-  Breadcrumb,
-  BreadcrumbItem,
   Card,
   CardBody,
   CardImg,
@@ -19,6 +17,7 @@ import {
 import { fetchDishes, selectDishById } from "../../features/dish/dishSlice";
 import { parseCommentDate } from "../../utils";
 import Loading from "../common/Loading";
+import NavBreadcrumb from "../common/NavBreadcrumb";
 import AddCommentForm from "./AddCommentForm";
 
 const DishDetail = () => {
@@ -49,12 +48,7 @@ const DishDetail = () => {
   ) : (
     <Container>
       <div className="row">
-        <Breadcrumb>
-          <BreadcrumbItem>
-            <Link to="/menu">Menu</Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem active>{dish.name}</BreadcrumbItem>
-        </Breadcrumb>
+        <NavBreadcrumb activeName={dish.name} />
         <div className="col-12">
           <h3>{dish.name}</h3>
           <hr />

@@ -1,17 +1,11 @@
-import { Link } from "react-router-dom";
-import { Breadcrumb, BreadcrumbItem } from "reactstrap";
+import NavBreadcrumb from "../common/NavBreadcrumb";
 import FeedbackForm from "./FeedbackForm";
 
 const Contact = () => {
   return (
     <div className="container">
       <div className="row">
-        <Breadcrumb>
-          <BreadcrumbItem>
-            <Link to="/home">Home</Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem active>Contact Us</BreadcrumbItem>
-        </Breadcrumb>
+        <NavBreadcrumb activeName="Contact Us" />
         <div className="col-12">
           <h3>Contact Us</h3>
           <hr />
