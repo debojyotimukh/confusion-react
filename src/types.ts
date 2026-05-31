@@ -1,5 +1,7 @@
+// json-server v1 returns entity `id` fields as strings.
+// `comment.dishId` is a number (it's a user-defined foreign key, not an auto-id).
 export interface Dish {
-  id: number;
+  id: string;
   name: string;
   image: string;
   description: string;
@@ -16,7 +18,7 @@ export interface Comment {
 }
 
 export interface Leader {
-  id: number;
+  id: string;
   name: string;
   image: string;
   designation: string;
@@ -25,7 +27,7 @@ export interface Leader {
 }
 
 export interface Promotion {
-  id: number;
+  id: string;
   name: string;
   image: string;
   description: string;

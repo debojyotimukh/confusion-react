@@ -19,14 +19,14 @@ import NavBreadcrumb from "../common/NavBreadcrumb";
 import AddCommentForm from "./AddCommentForm";
 
 const DishDetail = () => {
+  // dishId from URL is always a string; json-server v1 also returns id as string
   const { dishId } = useParams<{ dishId: string }>();
-  const dishIdNum = Number(dishId);
 
   const dishesLoaded = useAppSelector((state) => state.dishes.data.length > 0);
   const isLoading = useAppSelector((state) => state.dishes.isLoading);
   const errMsg = useAppSelector((state) => state.dishes.error);
   const dish = useAppSelector((state) =>
-    state.dishes.data.find((d) => d.id === dishIdNum)
+    state.dishes.data.find((d) => String(d.id) === dishId)
   );
 
   const dispatch = useAppDispatch();
@@ -81,7 +81,7 @@ const DishDetail = () => {
           <DishCard dish={dish} />
         </div>
         <div className="col-xm-12 col-md-5 m-1">
-          <Comments dishId={dish.id} />
+          <Comments dishId={String(dish.id)} />
         </div>
       </div>
     </Container>
@@ -104,10 +104,10 @@ const DishCard = ({ dish }: { dish: Dish }) => {
   );
 };
 
-const Comments = ({ dishId }: { dishId: number }) => {
-  // Filter comments for this dish from the full loaded set
+const Comments = ({ dishId }: { dishId: string }) => {
+  // c.dishId is a number; dish.id (passed here) is a string from json-server v1
   const comments = useAppSelector((state) =>
-    state.comments.data.filter((c) => c.dishId === dishId)
+    state.comments.data.filter((c) => String(c.dishId) === dishId)
   );
   // Gate on total loaded comments, NOT on this dish's comment count.
   // A dish with zero comments would otherwise trigger an infinite fetch loop.

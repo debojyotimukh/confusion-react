@@ -16,7 +16,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { addNewComment } from "../../features/dish/commentSlice";
 
 interface AddCommentFormProps {
-  dishId: number;
+  dishId: string;
 }
 
 const AddCommentForm = ({ dishId }: AddCommentFormProps) => {
@@ -45,7 +45,7 @@ const AddCommentForm = ({ dishId }: AddCommentFormProps) => {
         const comment = {
           ...values,
           id: crypto.randomUUID(),
-          dishId,
+          dishId: Number(dishId), // db stores dishId as number; dish.id from json-server v1 is a string
           date: new Date().toISOString(),
         };
         await dispatch(addNewComment(comment)).unwrap();
