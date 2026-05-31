@@ -17,7 +17,7 @@ Download the `db.json` file provided above to this folder.
 Move to this folder in your terminal window, and type the following at the command prompt to start the server:
 
 ```
-     json-server --watch db.json -p 3001 -d 2000
+     json-server --watch db.json -p 3001
 ```
 
 This should start up a server at port number 3001 on your machine. The data from this server can be accessed by typing the following addresses into your browser address bar:
