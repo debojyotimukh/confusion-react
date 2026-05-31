@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { Container } from "reactstrap";
 import "../../App.css";
@@ -9,7 +8,7 @@ const Footer = () => {
       <Container>
         <div className="row justify-content-center">
           <Links />
-          <Contact />
+          <FooterContact />
           <Social />
         </div>
         <div className="row justify-content-center">
@@ -46,7 +45,7 @@ const Links = () => {
   );
 };
 
-const Contact = () => {
+const FooterContact = () => {
   return (
     <div className="col-7 col-sm-5">
       <h5>Our Address</h5>

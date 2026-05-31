@@ -1,15 +1,16 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Card, CardImg, CardImgOverlay, CardTitle } from "reactstrap";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { baseUrl } from "../../constants";
 import { fetchDishes } from "../../features/dish/dishSlice";
+import { Dish } from "../../types";
 import Loading from "../common/Loading";
 import NavBreadcrumb from "../common/NavBreadcrumb";
 
 const Menu = () => {
-  const dishes = useSelector((state) => state.dishes);
-  const dispatch = useDispatch();
+  const dishes = useAppSelector((state) => state.dishes);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (dishes.data.length === 0) dispatch(fetchDishes());
@@ -51,7 +52,7 @@ const Menu = () => {
 
 export default Menu;
 
-const DishCard = ({ dish }) => {
+const DishCard = ({ dish }: { dish: Dish }) => {
   return (
     <Card>
       <Link to={`/menu/${dish.id}`}>

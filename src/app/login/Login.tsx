@@ -12,7 +12,11 @@ import {
   NavItem,
 } from "reactstrap";
 
-export const LoginButton = ({ onClick }) => {
+interface LoginButtonProps {
+  onClick: () => void;
+}
+
+export const LoginButton = ({ onClick }: LoginButtonProps) => {
   return (
     <Nav className="ml-auto" navbar>
       <NavItem>
@@ -24,7 +28,12 @@ export const LoginButton = ({ onClick }) => {
   );
 };
 
-export const LoginModal = ({ isOpen, toggler }) => {
+interface LoginModalProps {
+  isOpen: boolean;
+  toggler: () => void;
+}
+
+export const LoginModal = ({ isOpen, toggler }: LoginModalProps) => {
   return (
     <Modal isOpen={isOpen} toggle={toggler}>
       <ModalHeader toggle={toggler}>Login</ModalHeader>
@@ -37,7 +46,11 @@ export const LoginModal = ({ isOpen, toggler }) => {
   );
 };
 
-const LoginForm = ({ afterSubmit }) => {
+interface LoginFormProps {
+  afterSubmit: () => void;
+}
+
+const LoginForm = ({ afterSubmit }: LoginFormProps) => {
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -83,7 +96,7 @@ const LoginForm = ({ afterSubmit }) => {
             defaultChecked={true}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.remember}
+            value={String(formik.values.remember)}
           />
           Remember me
         </Label>

@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
   Card,
@@ -9,25 +8,28 @@ import {
   CardTitle,
   Container,
 } from "reactstrap";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { baseUrl } from "../../constants";
 import {
   fetchComments,
   selectCommentsByDishId,
 } from "../../features/dish/commentSlice";
 import { fetchDishes, selectDishById } from "../../features/dish/dishSlice";
+import { Dish } from "../../types";
 import { parseCommentDate } from "../../utils";
 import Loading from "../common/Loading";
 import NavBreadcrumb from "../common/NavBreadcrumb";
 import AddCommentForm from "./AddCommentForm";
 
 const DishDetail = () => {
-  const { dishId } = useParams();
+  const { dishId } = useParams<{ dishId: string }>();
+  const dishIdNum = Number(dishId);
 
-  const dish = useSelector((state) => selectDishById(state, dishId));
-  const isLoading = useSelector((state) => state.dishes.isLoading);
-  const errMsg = useSelector((state) => state.dishes.error);
+  const dish = useAppSelector((state) => selectDishById(state, dishIdNum));
+  const isLoading = useAppSelector((state) => state.dishes.isLoading);
+  const errMsg = useAppSelector((state) => state.dishes.error);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!dish) dispatch(fetchDishes());
@@ -45,7 +47,7 @@ const DishDetail = () => {
         <h4>{errMsg}</h4>
       </div>
     </Container>
-  ) : (
+  ) : dish ? (
     <Container>
       <div className="row">
         <NavBreadcrumb activeName={dish.name} />
@@ -59,17 +61,16 @@ const DishDetail = () => {
           <DishCard dish={dish} />
         </div>
         <div className="col-xm-12 col-md-5 m-1">
-          <div></div>
           <Comments dishId={dish.id} />
         </div>
       </div>
     </Container>
-  );
+  ) : null;
 };
 
 export default DishDetail;
 
-const DishCard = ({ dish }) => {
+const DishCard = ({ dish }: { dish: Dish }) => {
   return (
     <Card>
       <CardImg top src={baseUrl + dish.image} alt={dish.name} />
@@ -83,11 +84,11 @@ const DishCard = ({ dish }) => {
   );
 };
 
-const Comments = ({ dishId }) => {
-  const comments = useSelector((state) =>
+const Comments = ({ dishId }: { dishId: number }) => {
+  const comments = useAppSelector((state) =>
     selectCommentsByDishId(state, dishId)
   );
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (comments.length === 0) dispatch(fetchComments());

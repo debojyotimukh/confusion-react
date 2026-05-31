@@ -1,11 +1,10 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../app/hooks";
 import { Card, CardBody, CardHeader } from "reactstrap";
 import NavBreadcrumb from "../common/NavBreadcrumb";
 import Leaders from "./Leaders";
 
 const About = () => {
-  const leaders = useSelector((state) => state.leaders);
+  const leaders = useAppSelector((state) => state.leaders);
 
   return (
     <div className="container">

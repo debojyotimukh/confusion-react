@@ -1,25 +1,26 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getPromise } from "../../services";
+import { AsyncState, Promotion } from "../../types";
 
 export const fetchPromos = createAsyncThunk(
   "promotions/fetch",
-  async () => await getPromise("promotions")
+  async () => await getPromise<Promotion[]>("promotions")
 );
 
-const initialState = { data: [], isLoading: true, error: null };
+const initialState: AsyncState<Promotion> = { data: [], isLoading: true, error: null };
 
 const promoSlice = createSlice({
   name: "promotions",
   initialState,
   reducers: {},
   selectors: {
-    selectFeaturedPromo: (state) =>
-      state.data.filter((promo) => promo.featured)[0],
+    selectFeaturedPromo: (state) => state.data.find((promo) => promo.featured),
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchPromos.pending, (state, _) => {
-        state = initialState;
+      .addCase(fetchPromos.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
       })
       .addCase(fetchPromos.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -28,7 +29,7 @@ const promoSlice = createSlice({
       .addCase(fetchPromos.rejected, (state, action) => {
         state.isLoading = false;
         state.data = [];
-        state.error = action.payload;
+        state.error = action.error.message ?? "Unknown error";
       });
   },
 });
