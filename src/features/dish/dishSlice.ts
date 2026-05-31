@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
+import type { RootState } from "../../app/store";
 import { getPromise } from "../../services";
 import { AsyncState, Dish } from "../../types";
 
@@ -12,9 +13,6 @@ const dishSlice = createSlice({
   name: "dishes",
   initialState,
   reducers: {},
-  selectors: {
-    selectFeaturedDish: (state) => state.data.find((dish) => dish.featured),
-  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchDishes.pending, (state) => {
@@ -33,6 +31,22 @@ const dishSlice = createSlice({
   },
 });
 
-export const { selectFeaturedDish } = dishSlice.selectors;
+// Memoised selectors — find() returns the same object reference from the
+// array, but wrapping in createSelector ensures the result is only
+// recomputed when state.dishes.data actually changes.
+const selectDishesData = (state: RootState) => state.dishes.data;
+
+export const selectFeaturedDish = createSelector(
+  selectDishesData,
+  (data) => data.find((d) => d.featured)
+);
+
+/** Factory: call once per component instance (via useMemo) to get a
+ *  per-instance cache so multiple components with different dishIds
+ *  don't invalidate each other. */
+export const makeSelectDishById = (dishId: string) =>
+  createSelector(selectDishesData, (data) =>
+    data.find((d) => String(d.id) === dishId)
+  );
 
 export default dishSlice.reducer;

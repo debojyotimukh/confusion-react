@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import {
   Card,
@@ -10,8 +10,8 @@ import {
 } from "reactstrap";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { baseUrl } from "../../constants";
-import { fetchComments } from "../../features/dish/commentSlice";
-import { fetchDishes } from "../../features/dish/dishSlice";
+import { fetchComments, makeSelectCommentsByDishId } from "../../features/dish/commentSlice";
+import { fetchDishes, makeSelectDishById } from "../../features/dish/dishSlice";
 import { Dish } from "../../types";
 import { parseCommentDate } from "../../utils";
 import Loading from "../common/Loading";
@@ -22,12 +22,13 @@ const DishDetail = () => {
   // dishId from URL is always a string; json-server v1 also returns id as string
   const { dishId } = useParams<{ dishId: string }>();
 
+  // Create one memoised selector instance per dishId value
+  const selectDish = useMemo(() => makeSelectDishById(dishId ?? ""), [dishId]);
+
   const dishesLoaded = useAppSelector((state) => state.dishes.data.length > 0);
   const isLoading = useAppSelector((state) => state.dishes.isLoading);
   const errMsg = useAppSelector((state) => state.dishes.error);
-  const dish = useAppSelector((state) =>
-    state.dishes.data.find((d) => String(d.id) === dishId)
-  );
+  const dish = useAppSelector(selectDish);
 
   const dispatch = useAppDispatch();
 
@@ -105,10 +106,14 @@ const DishCard = ({ dish }: { dish: Dish }) => {
 };
 
 const Comments = ({ dishId }: { dishId: string }) => {
-  // c.dishId is a number; dish.id (passed here) is a string from json-server v1
-  const comments = useAppSelector((state) =>
-    state.comments.data.filter((c) => String(c.dishId) === dishId)
+  // One memoised selector instance per dishId — filter() always creates a
+  // new array so memoisation is critical to prevent spurious re-renders.
+  const selectComments = useMemo(
+    () => makeSelectCommentsByDishId(dishId),
+    [dishId]
   );
+
+  const comments = useAppSelector(selectComments);
   // Gate on total loaded comments, NOT on this dish's comment count.
   // A dish with zero comments would otherwise trigger an infinite fetch loop.
   const commentsLoaded = useAppSelector(

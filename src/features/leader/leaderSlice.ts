@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
+import type { RootState } from "../../app/store";
 import { getPromise } from "../../services";
 import { AsyncState, Leader } from "../../types";
 
@@ -13,9 +14,6 @@ const leaderSlice = createSlice({
   name: "leaders",
   initialState,
   reducers: {},
-  selectors: {
-    selectFeaturedLeader: (state) => state.data.find((leader) => leader.featured),
-  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchLeaders.pending, (state) => {
@@ -34,6 +32,9 @@ const leaderSlice = createSlice({
   },
 });
 
-export const { selectFeaturedLeader } = leaderSlice.selectors;
+export const selectFeaturedLeader = createSelector(
+  (state: RootState) => state.leaders.data,
+  (data) => data.find((l) => l.featured)
+);
 
 export default leaderSlice.reducer;

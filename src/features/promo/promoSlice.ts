@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
+import type { RootState } from "../../app/store";
 import { getPromise } from "../../services";
 import { AsyncState, Promotion } from "../../types";
 
@@ -13,9 +14,6 @@ const promoSlice = createSlice({
   name: "promotions",
   initialState,
   reducers: {},
-  selectors: {
-    selectFeaturedPromo: (state) => state.data.find((promo) => promo.featured),
-  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchPromos.pending, (state) => {
@@ -34,6 +32,9 @@ const promoSlice = createSlice({
   },
 });
 
-export const { selectFeaturedPromo } = promoSlice.selectors;
+export const selectFeaturedPromo = createSelector(
+  (state: RootState) => state.promotions.data,
+  (data) => data.find((p) => p.featured)
+);
 
 export default promoSlice.reducer;

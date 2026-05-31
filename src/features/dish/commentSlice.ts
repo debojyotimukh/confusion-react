@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
+import type { RootState } from "../../app/store";
 import { getPromise, postPromise } from "../../services";
 import { AsyncState, Comment } from "../../types";
 
@@ -18,7 +19,6 @@ const commentSlice = createSlice({
   name: "comments",
   initialState,
   reducers: {},
-  selectors: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchComments.pending, (state) => {
@@ -39,5 +39,15 @@ const commentSlice = createSlice({
       });
   },
 });
+
+const selectCommentsData = (state: RootState) => state.comments.data;
+
+/** Factory: one selector instance per component so each dishId has its
+ *  own memoisation cache. filter() always creates a new array, so
+ *  memoisation is essential here. */
+export const makeSelectCommentsByDishId = (dishId: string) =>
+  createSelector(selectCommentsData, (data) =>
+    data.filter((c) => String(c.dishId) === dishId)
+  );
 
 export default commentSlice.reducer;
