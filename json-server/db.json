@@ -1,7 +1,7 @@
 {
   "dishes": [
     {
-      "id": 0,
+      "id": "0",
       "name": "Uthappizza",
       "image": "images/uthappizza.png",
       "category": "mains",
@@ -11,7 +11,7 @@
       "description": "A unique combination of Indian Uthappam (pancake) and Italian pizza, topped with Cerignola olives, ripe vine cherry tomatoes, Vidalia onion, Guntur chillies and Buffalo Paneer."
     },
     {
-      "id": 1,
+      "id": "1",
       "name": "Zucchipakoda",
       "image": "images/zucchipakoda.png",
       "category": "appetizer",
@@ -21,7 +21,7 @@
       "description": "Deep fried Zucchini coated with mildly spiced Chickpea flour batter accompanied with a sweet-tangy tamarind sauce"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Vadonut",
       "image": "images/vadonut.png",
       "category": "appetizer",
@@ -31,7 +31,7 @@
       "description": "A quintessential ConFusion experience, is it a vada or is it a donut?"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "ElaiCheese Cake",
       "image": "images/elaicheesecake.png",
       "category": "dessert",
@@ -43,7 +43,7 @@
   ],
   "comments": [
     {
-      "id": 0,
+      "id": "0",
       "dishId": 0,
       "rating": 5,
       "comment": "Imagine all the eatables, living in conFusion!",
@@ -51,7 +51,7 @@
       "date": "2012-10-16T17:57:28.556094Z"
     },
     {
-      "id": 1,
+      "id": "1",
       "dishId": 0,
       "rating": 4,
       "comment": "Sends anyone to heaven, I wish I could get my mother-in-law to eat it!",
@@ -59,7 +59,7 @@
       "date": "2014-09-05T17:57:28.556094Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "dishId": 0,
       "rating": 3,
       "comment": "Eat it, just eat it!",
@@ -67,7 +67,7 @@
       "date": "2015-02-13T17:57:28.556094Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "dishId": 0,
       "rating": 4,
       "comment": "Ultimate, Reaching for the stars!",
@@ -75,7 +75,7 @@
       "date": "2013-12-02T17:57:28.556094Z"
     },
     {
-      "id": 4,
+      "id": "4",
       "dishId": 0,
       "rating": 2,
       "comment": "It's your birthday, we're gonna party!",
@@ -83,7 +83,7 @@
       "date": "2011-12-02T17:57:28.556094Z"
     },
     {
-      "id": 5,
+      "id": "5",
       "dishId": 1,
       "rating": 5,
       "comment": "Imagine all the eatables, living in conFusion!",
@@ -91,7 +91,7 @@
       "date": "2012-10-16T17:57:28.556094Z"
     },
     {
-      "id": 6,
+      "id": "6",
       "dishId": 1,
       "rating": 4,
       "comment": "Sends anyone to heaven, I wish I could get my mother-in-law to eat it!",
@@ -99,7 +99,7 @@
       "date": "2014-09-05T17:57:28.556094Z"
     },
     {
-      "id": 7,
+      "id": "7",
       "dishId": 1,
       "rating": 3,
       "comment": "Eat it, just eat it!",
@@ -107,7 +107,7 @@
       "date": "2015-02-13T17:57:28.556094Z"
     },
     {
-      "id": 8,
+      "id": "8",
       "dishId": 1,
       "rating": 4,
       "comment": "Ultimate, Reaching for the stars!",
@@ -115,7 +115,7 @@
       "date": "2013-12-02T17:57:28.556094Z"
     },
     {
-      "id": 9,
+      "id": "9",
       "dishId": 1,
       "rating": 2,
       "comment": "It's your birthday, we're gonna party!",
@@ -123,7 +123,7 @@
       "date": "2011-12-02T17:57:28.556094Z"
     },
     {
-      "id": 10,
+      "id": "10",
       "dishId": 2,
       "rating": 5,
       "comment": "Imagine all the eatables, living in conFusion!",
@@ -131,7 +131,7 @@
       "date": "2012-10-16T17:57:28.556094Z"
     },
     {
-      "id": 11,
+      "id": "11",
       "dishId": 2,
       "rating": 4,
       "comment": "Sends anyone to heaven, I wish I could get my mother-in-law to eat it!",
@@ -139,7 +139,7 @@
       "date": "2014-09-05T17:57:28.556094Z"
     },
     {
-      "id": 12,
+      "id": "12",
       "dishId": 2,
       "rating": 3,
       "comment": "Eat it, just eat it!",
@@ -147,7 +147,7 @@
       "date": "2015-02-13T17:57:28.556094Z"
     },
     {
-      "id": 13,
+      "id": "13",
       "dishId": 2,
       "rating": 4,
       "comment": "Ultimate, Reaching for the stars!",
@@ -155,7 +155,7 @@
       "date": "2013-12-02T17:57:28.556094Z"
     },
     {
-      "id": 14,
+      "id": "14",
       "dishId": 2,
       "rating": 2,
       "comment": "It's your birthday, we're gonna party!",
@@ -163,7 +163,7 @@
       "date": "2011-12-02T17:57:28.556094Z"
     },
     {
-      "id": 15,
+      "id": "15",
       "dishId": 3,
       "rating": 5,
       "comment": "Imagine all the eatables, living in conFusion!",
@@ -171,7 +171,7 @@
       "date": "2012-10-16T17:57:28.556094Z"
     },
     {
-      "id": 16,
+      "id": "16",
       "dishId": 3,
       "rating": 4,
       "comment": "Sends anyone to heaven, I wish I could get my mother-in-law to eat it!",
@@ -179,7 +179,7 @@
       "date": "2014-09-05T17:57:28.556094Z"
     },
     {
-      "id": 17,
+      "id": "17",
       "dishId": 3,
       "rating": 3,
       "comment": "Eat it, just eat it!",
@@ -187,7 +187,7 @@
       "date": "2015-02-13T17:57:28.556094Z"
     },
     {
-      "id": 18,
+      "id": "18",
       "dishId": 3,
       "rating": 4,
       "comment": "Ultimate, Reaching for the stars!",
@@ -195,7 +195,7 @@
       "date": "2013-12-02T17:57:28.556094Z"
     },
     {
-      "id": 19,
+      "id": "19",
       "dishId": 3,
       "rating": 2,
       "comment": "It's your birthday, we're gonna party!",
@@ -208,12 +208,20 @@
       "author": "Debojyoti",
       "comment": "test",
       "date": "2022-10-15T21:24:19.491Z",
-      "id": 20
+      "id": "20"
+    },
+    {
+      "rating": "2",
+      "author": "DDD",
+      "comment": "test comment",
+      "id": "x6CA6zrdS3w",
+      "dishId": 3,
+      "date": "2026-05-31T20:09:56.560Z"
     }
   ],
   "promotions": [
     {
-      "id": 0,
+      "id": "0",
       "name": "Weekend Grand Buffet",
       "image": "images/buffet.png",
       "label": "New",
@@ -224,7 +232,7 @@
   ],
   "leaders": [
     {
-      "id": 0,
+      "id": "0",
       "name": "Peter Pan",
       "image": "images/alberto.png",
       "designation": "Chief Epicurious Officer",
@@ -233,7 +241,7 @@
       "description": "Our CEO, Peter, credits his hardworking East Asian immigrant parents who undertook the arduous journey to the shores of America with the intention of giving their children the best future. His mother's wizardy in the kitchen whipping up the tastiest dishes with whatever is available inexpensively at the supermarket, was his first inspiration to create the fusion cuisines for which The Frying Pan became well known. He brings his zeal for fusion cuisines to this restaurant, pioneering cross-cultural culinary connections."
     },
     {
-      "id": 1,
+      "id": "1",
       "name": "Dhanasekaran Witherspoon",
       "image": "images/alberto.png",
       "designation": "Chief Food Officer",
@@ -242,7 +250,7 @@
       "description": "Our CFO, Danny, as he is affectionately referred to by his colleagues, comes from a long established family tradition in farming and produce. His experiences growing up on a farm in the Australian outback gave him great appreciation for varieties of food sources. As he puts it in his own words, Everything that runs, wins, and everything that stays, pays!"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Agumbe Tang",
       "image": "images/alberto.png",
       "designation": "Chief Taste Officer",
@@ -251,7 +259,7 @@
       "description": "Blessed with the most discerning gustatory sense, Agumbe, our CFO, personally ensures that every dish that we serve meets his exacting tastes. Our chefs dread the tongue lashing that ensues if their dish does not meet his exacting standards. He lives by his motto, You click only if you survive my lick."
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Alberto Somayya",
       "image": "images/alberto.png",
       "designation": "Executive Chef",
@@ -270,7 +278,8 @@
       "contactType": "Email",
       "message": "afadsfds",
       "date": "2017-12-04T09:41:49.890Z",
-      "id": 1
+      "id": "1"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
