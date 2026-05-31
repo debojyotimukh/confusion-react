@@ -10,9 +10,7 @@ import {
 } from "reactstrap";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { baseUrl } from "../../constants";
-import {
-  fetchComments,
-} from "../../features/dish/commentSlice";
+import { fetchComments } from "../../features/dish/commentSlice";
 import { fetchDishes } from "../../features/dish/dishSlice";
 import { Dish } from "../../types";
 import { parseCommentDate } from "../../utils";
@@ -24,8 +22,7 @@ const DishDetail = () => {
   const { dishId } = useParams<{ dishId: string }>();
   const dishIdNum = Number(dishId);
 
-  // Use direct state access to avoid RTK slice-selector memoisation quirks
-  // with parameterised selectors
+  const dishesLoaded = useAppSelector((state) => state.dishes.data.length > 0);
   const isLoading = useAppSelector((state) => state.dishes.isLoading);
   const errMsg = useAppSelector((state) => state.dishes.error);
   const dish = useAppSelector((state) =>
@@ -34,9 +31,11 @@ const DishDetail = () => {
 
   const dispatch = useAppDispatch();
 
+  // Gate on whether ANY dishes have been fetched — same pattern as Menu.tsx.
+  // Gating on !dish would loop forever when a dish is genuinely absent.
   useEffect(() => {
-    if (!isLoading && !dish) dispatch(fetchDishes());
-  }, [isLoading, dish, dispatch]);
+    if (!dishesLoaded) dispatch(fetchDishes());
+  }, [dishesLoaded, dispatch]);
 
   if (isLoading) {
     return (
@@ -106,16 +105,21 @@ const DishCard = ({ dish }: { dish: Dish }) => {
 };
 
 const Comments = ({ dishId }: { dishId: number }) => {
-  // Direct state access — avoids parameterised RTK slice-selector edge cases
+  // Filter comments for this dish from the full loaded set
   const comments = useAppSelector((state) =>
     state.comments.data.filter((c) => c.dishId === dishId)
+  );
+  // Gate on total loaded comments, NOT on this dish's comment count.
+  // A dish with zero comments would otherwise trigger an infinite fetch loop.
+  const commentsLoaded = useAppSelector(
+    (state) => state.comments.data.length > 0
   );
   const isLoading = useAppSelector((state) => state.comments.isLoading);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!isLoading && comments.length === 0) dispatch(fetchComments());
-  }, [isLoading, comments.length, dispatch]);
+    if (!commentsLoaded) dispatch(fetchComments());
+  }, [commentsLoaded, dispatch]);
 
   return (
     <div className="container">

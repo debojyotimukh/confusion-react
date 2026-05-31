@@ -16,39 +16,36 @@ import { Dish, Leader, Promotion } from "../../types";
 import Loading from "../common/Loading";
 
 const Home = () => {
-  const dish = useAppSelector((state) => state.dishes);
-  const promo = useAppSelector((state) => state.promotions);
-  const leader = useAppSelector((state) => state.leaders);
-  const featuredDish = useAppSelector(selectFeaturedDish);
-  const featuredPromo = useAppSelector(selectFeaturedPromo);
+  const dishesLoaded   = useAppSelector((state) => state.dishes.data.length > 0);
+  const promosLoaded   = useAppSelector((state) => state.promotions.data.length > 0);
+  const leadersLoaded  = useAppSelector((state) => state.leaders.data.length > 0);
+
+  const dishIsLoading    = useAppSelector((state) => state.dishes.isLoading);
+  const promoIsLoading   = useAppSelector((state) => state.promotions.isLoading);
+  const leaderIsLoading  = useAppSelector((state) => state.leaders.isLoading);
+
+  const dishErr    = useAppSelector((state) => state.dishes.error);
+  const promoErr   = useAppSelector((state) => state.promotions.error);
+  const leaderErr  = useAppSelector((state) => state.leaders.error);
+
+  const featuredDish   = useAppSelector(selectFeaturedDish);
+  const featuredPromo  = useAppSelector(selectFeaturedPromo);
   const featuredLeader = useAppSelector(selectFeaturedLeader);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (dish.data.length === 0) dispatch(fetchDishes());
-    if (promo.data.length === 0) dispatch(fetchPromos());
-    if (leader.data.length === 0) dispatch(fetchLeaders());
-  }, [dish.data.length, promo.data.length, leader.data.length, dispatch]);
+    if (!dishesLoaded)  dispatch(fetchDishes());
+    if (!promosLoaded)  dispatch(fetchPromos());
+    if (!leadersLoaded) dispatch(fetchLeaders());
+  }, [dishesLoaded, promosLoaded, leadersLoaded, dispatch]);
 
   return (
     <div className="container">
       <div className="row align-items-start">
-        <HomeCard
-          item={featuredDish}
-          isLoading={dish.isLoading}
-          errMsg={dish.error}
-        />
-        <HomeCard
-          item={featuredPromo}
-          isLoading={promo.isLoading}
-          errMsg={promo.error}
-        />
-        <HomeCard
-          item={featuredLeader}
-          isLoading={leader.isLoading}
-          errMsg={leader.error}
-        />
+        <HomeCard item={featuredDish}   isLoading={dishIsLoading}   errMsg={dishErr} />
+        <HomeCard item={featuredPromo}  isLoading={promoIsLoading}  errMsg={promoErr} />
+        <HomeCard item={featuredLeader} isLoading={leaderIsLoading} errMsg={leaderErr} />
       </div>
     </div>
   );
