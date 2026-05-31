@@ -12,9 +12,8 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { baseUrl } from "../../constants";
 import {
   fetchComments,
-  selectCommentsByDishId,
 } from "../../features/dish/commentSlice";
-import { fetchDishes, selectDishById } from "../../features/dish/dishSlice";
+import { fetchDishes } from "../../features/dish/dishSlice";
 import { Dish } from "../../types";
 import { parseCommentDate } from "../../utils";
 import Loading from "../common/Loading";
@@ -25,29 +24,51 @@ const DishDetail = () => {
   const { dishId } = useParams<{ dishId: string }>();
   const dishIdNum = Number(dishId);
 
-  const dish = useAppSelector((state) => selectDishById(state, dishIdNum));
+  // Use direct state access to avoid RTK slice-selector memoisation quirks
+  // with parameterised selectors
   const isLoading = useAppSelector((state) => state.dishes.isLoading);
   const errMsg = useAppSelector((state) => state.dishes.error);
+  const dish = useAppSelector((state) =>
+    state.dishes.data.find((d) => d.id === dishIdNum)
+  );
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!dish) dispatch(fetchDishes());
-  }, [dish, dispatch]);
+    if (!isLoading && !dish) dispatch(fetchDishes());
+  }, [isLoading, dish, dispatch]);
 
-  return isLoading ? (
-    <Container>
-      <div className="row">
-        <Loading />
-      </div>
-    </Container>
-  ) : errMsg ? (
-    <Container>
-      <div className="row">
-        <h4>{errMsg}</h4>
-      </div>
-    </Container>
-  ) : dish ? (
+  if (isLoading) {
+    return (
+      <Container>
+        <div className="row">
+          <Loading />
+        </div>
+      </Container>
+    );
+  }
+
+  if (errMsg) {
+    return (
+      <Container>
+        <div className="row">
+          <h4>{errMsg}</h4>
+        </div>
+      </Container>
+    );
+  }
+
+  if (!dish) {
+    return (
+      <Container>
+        <div className="row mt-4">
+          <h4>Dish not found.</h4>
+        </div>
+      </Container>
+    );
+  }
+
+  return (
     <Container>
       <div className="row">
         <NavBreadcrumb activeName={dish.name} />
@@ -65,7 +86,7 @@ const DishDetail = () => {
         </div>
       </div>
     </Container>
-  ) : null;
+  );
 };
 
 export default DishDetail;
@@ -85,30 +106,34 @@ const DishCard = ({ dish }: { dish: Dish }) => {
 };
 
 const Comments = ({ dishId }: { dishId: number }) => {
+  // Direct state access — avoids parameterised RTK slice-selector edge cases
   const comments = useAppSelector((state) =>
-    selectCommentsByDishId(state, dishId)
+    state.comments.data.filter((c) => c.dishId === dishId)
   );
+  const isLoading = useAppSelector((state) => state.comments.isLoading);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (comments.length === 0) dispatch(fetchComments());
-  }, [comments.length, dispatch]);
+    if (!isLoading && comments.length === 0) dispatch(fetchComments());
+  }, [isLoading, comments.length, dispatch]);
 
   return (
     <div className="container">
       <h4>Comments</h4>
-      <ul className="list-unstyled">
-        {comments.map((comment, index) => {
-          return (
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <ul className="list-unstyled">
+          {comments.map((comment, index) => (
             <li key={index} className="row mb-2">
               {comment.comment}
               <div className="mt-1">
                 -- {comment.author}, {parseCommentDate(comment.date)}
               </div>
             </li>
-          );
-        })}
-      </ul>
+          ))}
+        </ul>
+      )}
       <AddCommentForm dishId={dishId} />
     </div>
   );

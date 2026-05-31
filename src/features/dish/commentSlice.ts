@@ -18,10 +18,7 @@ const commentSlice = createSlice({
   name: "comments",
   initialState,
   reducers: {},
-  selectors: {
-    selectCommentsByDishId: (state, dishId: number) =>
-      state.data.filter((comment) => comment.dishId === dishId),
-  },
+  selectors: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchComments.pending, (state) => {
@@ -42,7 +39,5 @@ const commentSlice = createSlice({
       });
   },
 });
-
-export const { selectCommentsByDishId } = commentSlice.selectors;
 
 export default commentSlice.reducer;
