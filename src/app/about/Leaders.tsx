@@ -1,8 +1,15 @@
 import { Media } from "reactstrap";
 import { baseUrl } from "../../constants";
+import { Leader } from "../../types";
 import Loading from "../common/Loading";
 
-const Leaders = ({ leaders, isLoading, errMsg }) => {
+interface LeadersProps {
+  leaders: Leader[];
+  isLoading: boolean;
+  errMsg: string | null;
+}
+
+const Leaders = ({ leaders, isLoading, errMsg }: LeadersProps) => {
   return isLoading ? (
     <div className="container">
       <div className="row">
@@ -13,20 +20,18 @@ const Leaders = ({ leaders, isLoading, errMsg }) => {
     <h4>{errMsg}</h4>
   ) : (
     <Media list>
-      {leaders
-        .filter((leader) => leader !== null)
-        .map((leader) => (
-          <div key={leader.id} className="col-12 col-md m-1 mt-3">
-            <Leader item={leader} />
-          </div>
-        ))}
+      {leaders.map((leader) => (
+        <div key={leader.id} className="col-12 col-md m-1 mt-3">
+          <LeaderItem item={leader} />
+        </div>
+      ))}
     </Media>
   );
 };
 
 export default Leaders;
 
-const Leader = ({ item }) => {
+const LeaderItem = ({ item }: { item: Leader }) => {
   return (
     <Media>
       <Media left middle className="row">

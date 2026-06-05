@@ -61,7 +61,11 @@ const BrandName = () => {
   );
 };
 
-const PageNavigation = ({ collapse }) => {
+interface PageNavigationProps {
+  collapse: boolean;
+}
+
+const PageNavigation = ({ collapse }: PageNavigationProps) => {
   return (
     <Collapse navbar isOpen={collapse}>
       <Nav navbar>

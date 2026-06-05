@@ -1,13 +1,17 @@
 import { Link, useLocation } from "react-router-dom";
 import { Breadcrumb, BreadcrumbItem } from "reactstrap";
 
-const toTitleCase = (str) =>
+const toTitleCase = (str: string) =>
   str
     .split(" ")
     .map((w) => w[0].toUpperCase() + w.substring(1).toLowerCase())
     .join(" ");
 
-const NavBreadcrumb = ({ activeName }) => {
+interface NavBreadcrumbProps {
+  activeName?: string;
+}
+
+const NavBreadcrumb = ({ activeName }: NavBreadcrumbProps) => {
   const location = useLocation();
   const items = location.pathname.split("/");
   items[0] = "home";

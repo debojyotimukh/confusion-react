@@ -1,6 +1,5 @@
 import { useFormik } from "formik";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import {
   Button,
   Col,
@@ -13,18 +12,23 @@ import {
   ModalHeader,
 } from "reactstrap";
 import * as Yup from "yup";
+import { useAppDispatch } from "../../app/hooks";
 import { addNewComment } from "../../features/dish/commentSlice";
 
-const AddCommentForm = ({ dishId }) => {
-  const dispatch = useDispatch();
+interface AddCommentFormProps {
+  dishId: string;
+}
+
+const AddCommentForm = ({ dishId }: AddCommentFormProps) => {
+  const dispatch = useAppDispatch();
   const [isModalOpen, setModalOpen] = useState(false);
   const toggleModal = () => setModalOpen(!isModalOpen);
-  const [submitError, setSubmitError] = useState(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const formik = useFormik({
     initialValues: {
       rating: 5,
-      name: "",
+      author: "",
       comment: "",
     },
     validationSchema: Yup.object({
@@ -41,15 +45,14 @@ const AddCommentForm = ({ dishId }) => {
         const comment = {
           ...values,
           id: crypto.randomUUID(),
-          dishId: parseInt(dishId),
+          dishId: Number(dishId), // db stores dishId as number; dish.id from json-server v1 is a string
           date: new Date().toISOString(),
         };
-        console.log("Comment added: " + JSON.stringify(comment));
         await dispatch(addNewComment(comment)).unwrap();
         resetForm();
         toggleModal();
       } catch (error) {
-        console.log("Feedback submit failed: " + error.message);
+        console.log("Comment submit failed: " + (error as Error).message);
         setSubmitError("Failed to submit, try again");
         setSubmitting(false);
       }
@@ -79,11 +82,11 @@ const AddCommentForm = ({ dishId }) => {
                   onBlur={formik.handleBlur}
                   value={formik.values.rating}
                 >
-                  <option value={"1"}>1</option>
-                  <option value={"2"}>2</option>
-                  <option value={"3"}>3</option>
-                  <option value={"4"}>4</option>
-                  <option value={"5"}>5</option>
+                  <option value={1}>1</option>
+                  <option value={2}>2</option>
+                  <option value={3}>3</option>
+                  <option value={4}>4</option>
+                  <option value={5}>5</option>
                 </Input>
               </Col>
             </FormGroup>
@@ -120,7 +123,7 @@ const AddCommentForm = ({ dishId }) => {
                   className="form-control"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.message}
+                  value={formik.values.comment}
                 />
                 {formik.touched.comment && formik.errors.comment ? (
                   <div className="text-danger">{formik.errors.comment}</div>

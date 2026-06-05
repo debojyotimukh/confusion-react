@@ -3,8 +3,16 @@ import { useReducer } from "react";
 import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
 import * as Yup from "yup";
 import { postFeedback } from "../../services";
+import { Feedback } from "../../types";
 
-const submitResponseReducer = (_, action) => {
+interface SubmitResponse {
+  message: string | null;
+  displayStyle: string;
+}
+
+type SubmitAction = { type: "success" } | { type: "error" };
+
+const submitResponseReducer = (_: SubmitResponse, action: SubmitAction): SubmitResponse => {
   if (action.type === "success")
     return { message: "Thanks for feedback!", displayStyle: "text-success" };
   if (action.type === "error")
@@ -21,7 +29,7 @@ const FeedbackForm = () => {
     { message: null, displayStyle: "" }
   );
 
-  const formik = useFormik({
+  const formik = useFormik<Omit<Feedback, "date">>({
     initialValues: {
       firstname: "",
       lastname: "",
@@ -40,14 +48,15 @@ const FeedbackForm = () => {
         .min(3, "Must be greater than 2 characters")
         .max(15, "Must be 15 characters or less")
         .required("Required"),
-      telnum: Yup.number("Must be a number")
-        .min(100, "Must be greater than 2 numbers")
-        .max(99999999999, "Must be 15 numbers or less")
+      telnum: Yup.string()
+        .matches(/^\d+$/, "Must be a number")
+        .min(3, "Must be greater than 2 digits")
+        .max(15, "Must be 15 digits or less")
         .required("Required"),
       email: Yup.string().email("Invalid Email Address").required("Required"),
     }),
     onSubmit: (values, { resetForm, setSubmitting }) => {
-      const feedback = {
+      const feedback: Feedback = {
         ...values,
         date: new Date().toISOString(),
       };
@@ -61,7 +70,7 @@ const FeedbackForm = () => {
         (msg) => {
           console.log("Feedback submit failed: " + msg);
           dispatchSubmitResponse({ type: "error" });
-          setSubmitting(false); // don't reset form, allow retry
+          setSubmitting(false);
         }
       );
     },
@@ -69,10 +78,10 @@ const FeedbackForm = () => {
 
   return (
     <Form onSubmit={formik.handleSubmit}>
-      <TextInput formik={formik} formModel={"firstname"} label={"First Name"} />
-      <TextInput formik={formik} formModel={"lastname"} label={"Last Name"} />
-      <TextInput formik={formik} formModel={"telnum"} label={"Contact Tel."} />
-      <TextInput formik={formik} formModel={"email"} label={"Email"} />
+      <TextInput formik={formik} formModel="firstname" label="First Name" />
+      <TextInput formik={formik} formModel="lastname" label="Last Name" />
+      <TextInput formik={formik} formModel="telnum" label="Contact Tel." />
+      <TextInput formik={formik} formModel="email" label="Email" />
       <FormGroup row>
         <Col md={{ size: 6, offset: 2 }}>
           <FormGroup check>
@@ -86,7 +95,7 @@ const FeedbackForm = () => {
                 defaultChecked={true}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.agree}
+                value={String(formik.values.agree)}
               />
             </Label>
           </FormGroup>
@@ -100,8 +109,8 @@ const FeedbackForm = () => {
             onBlur={formik.handleBlur}
             value={formik.values.contactType}
           >
-            <option value={"tel"}>Tel.</option>
-            <option value={"email"}>Email</option>
+            <option value="tel">Tel.</option>
+            <option value="email">Email</option>
           </Input>
         </Col>
       </FormGroup>
@@ -140,25 +149,33 @@ const FeedbackForm = () => {
 
 export default FeedbackForm;
 
-const TextInput = ({ formik, formModel, label }) => {
+type FeedbackFormValues = Omit<Feedback, "date">;
+
+interface TextInputProps {
+  formik: ReturnType<typeof useFormik<FeedbackFormValues>>;
+  formModel: keyof FeedbackFormValues;
+  label: string;
+}
+
+const TextInput = ({ formik, formModel, label }: TextInputProps) => {
   return (
     <FormGroup row>
-      <Label htmlFor={formModel} md={2}>
+      <Label htmlFor={formModel as string} md={2}>
         {label}
       </Label>
       <Col md={10}>
         <Input
           type="text"
-          id={formModel}
-          name={formModel}
+          id={formModel as string}
+          name={formModel as string}
           placeholder={label}
           className="form-control"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          value={formik.values[formModel]}
+          value={String(formik.values[formModel])}
         />
         {formik.touched[formModel] && formik.errors[formModel] ? (
-          <div className="text-danger">{formik.errors[formModel]}</div>
+          <div className="text-danger">{formik.errors[formModel] as string}</div>
         ) : null}
       </Col>
     </FormGroup>
